@@ -1,0 +1,143 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171b23;
+  --ink: #f2f4f8;
+  --muted: #9ca9ba;
+  --line: #2a3240;
+  --accent: #f0b429;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Alegreya", Georgia, serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top right, #1b2330, #0f1115 48%);
+}
+
+.layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1b202a 0%, #141922 100%);
+}
+
+.controls {
+  padding: 14px;
+  overflow: auto;
+  max-height: calc(100vh - 32px);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.group {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: #11151d;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin: 6px 0;
+}
+
+label.inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0f1319;
+  color: var(--ink);
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+  border-color: #5f4920;
+  background: linear-gradient(180deg, #6f5422, #4c3918);
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+#debug {
+  margin: 0;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px dashed #3a4352;
+  font-size: 0.8rem;
+  color: #d8e0ea;
+  background: #0e1218;
+  white-space: pre-wrap;
+}
+
+.viewport {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+#stage {
+  width: min(100%, 980px);
+  height: auto;
+  max-height: calc(100vh - 56px);
+  border-radius: 10px;
+  border: 1px solid #324057;
+  background:
+    linear-gradient(90deg, #1e2533 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(#1e2533 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 50% 40%, #1d2a42, #11141d 55%);
+  image-rendering: pixelated;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    max-height: none;
+  }
+}
