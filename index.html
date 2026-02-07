@@ -125,6 +125,45 @@
           <h2>Debug</h2>
           <pre id="debug"></pre>
         </section>
+
+        <section class="group">
+          <h2>Generador SpriteSheet</h2>
+          <p class="muted">Soporta prefijos: PJ_, W_, NPC_, I_, E#_</p>
+          <label>
+            Ruta de referencia (opcional)
+            <input id="folderPath" type="text" placeholder="/Users/.../PJ_Gargoyle" />
+          </label>
+          <label>
+            Carpeta de frames
+            <input id="framesDir" type="file" webkitdirectory directory multiple />
+          </label>
+          <div class="row2">
+            <label>
+              Frame width
+              <input id="genFrameWidth" type="number" min="16" value="128" />
+            </label>
+            <label>
+              Frame height
+              <input id="genFrameHeight" type="number" min="16" value="128" />
+            </label>
+          </div>
+          <button id="buildSheetBtn" type="button">Generar SpriteSheet</button>
+          <p id="buildStatus" class="muted"></p>
+        </section>
+
+        <section class="group">
+          <h2>Generados</h2>
+          <label>
+            Sprite generado
+            <select id="generatedSelect"></select>
+          </label>
+          <div class="row2">
+            <button id="useGeneratedBase" type="button">Usar como Base</button>
+            <button id="useGeneratedRight" type="button">Usar en Right</button>
+            <button id="useGeneratedLeft" type="button">Usar en Left</button>
+            <button id="downloadGenerated" type="button">Descargar PNG</button>
+          </div>
+        </section>
       </aside>
 
       <section class="panel viewport">
