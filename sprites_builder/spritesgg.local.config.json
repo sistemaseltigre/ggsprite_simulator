@@ -1,0 +1,6 @@
+{
+  "game_root": ".",
+  "targets": [
+    "generated_targets"
+  ]
+}

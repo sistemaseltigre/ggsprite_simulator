@@ -54,6 +54,38 @@ Notas:
 - En navegador no se puede leer una ruta absoluta del sistema directamente por seguridad. Por eso se usa selector de carpeta (`webkitdirectory`) y el campo de ruta es de referencia.
 - Al generar correctamente, el spritesheet se agrega a “Generados”, se puede descargar y aplicar al preview.
 
+## Builder Python incluido en este repo
+
+Ya se copió una versión local de los scripts de `spritesgg` en:
+
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/build_sprites.py`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/build.sh`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/render.sh`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/spritesgg.local.config.json`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/bridge_server.py`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/start_builder_bridge.command`
+
+Uso recomendado (desde la carpeta donde están tus carpetas `PJ_`, `W_`, `NPC_`, etc.):
+
+```bash
+/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/build.sh
+```
+
+Esto genera los `.png` y además copia a `generated_targets/...` (config local), evitando depender de rutas externas fuera del repo.
+
+## Uso sin terminal (desde la UI)
+
+1. Ejecuta una vez:
+   - `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/start_builder_bridge.command`
+2. Abre:
+   - `/Users/jesussilva/Documents/gpt/sprite_simulator/index.html`
+3. En “Generador SpriteSheet”:
+   - escribe la ruta absoluta (ej. `/Users/.../PJ_Gargoyle`)
+   - clic en `Verificar Builder Local`
+   - clic en `Generar con Builder Local`
+
+El PNG generado se agrega automáticamente en “Generados” y puedes aplicarlo al preview o descargarlo.
+
 ## Reglas de combinación incluidas
 
 - `shield` se maneja en mano izquierda.

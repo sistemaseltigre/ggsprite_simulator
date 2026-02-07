@@ -6,6 +6,7 @@ Este simulador debe mantenerse alineado con estas fuentes del proyecto principal
 - `/Users/jesussilva/Documents/gpt/gableguardians/frontend-web/lib/game/remote_player_component.dart`
 - `/Users/jesussilva/Documents/gpt/gableguardians/frontend-web/lib/game/player_state.dart`
 - `/Users/jesussilva/Documents/spritesgg/build_sprites.py`
+- `/Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/build_sprites.py` (copia local para el repo)
 
 Checklist cuando cambien animaciones en el juego:
 
@@ -15,5 +16,6 @@ Checklist cuando cambien animaciones en el juego:
 4. Verificar excepciones de capas (ejemplo `orb + shield` con attack base row especial).
 5. Copiar nuevos PNG de ejemplo a `sprite_simulator/assets`.
 6. Mantener sincronizado el generador web con perfiles/prefijos/validaciones del script Python.
+7. Si cambia el flujo local sin terminal, actualizar `sprites_builder/bridge_server.py` y botones de `index.html` + `app.js`.
 
 Objetivo: que diseño vea exactamente lo que verá el juego al integrar sprites.

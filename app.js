@@ -112,6 +112,8 @@ const ui = {
   genFrameWidth: document.getElementById("genFrameWidth"),
   genFrameHeight: document.getElementById("genFrameHeight"),
   buildSheetBtn: document.getElementById("buildSheetBtn"),
+  buildLocalBtn: document.getElementById("buildLocalBtn"),
+  checkBuilderBtn: document.getElementById("checkBuilderBtn"),
   buildStatus: document.getElementById("buildStatus"),
   generatedSelect: document.getElementById("generatedSelect"),
   useGeneratedBase: document.getElementById("useGeneratedBase"),
@@ -119,6 +121,7 @@ const ui = {
   useGeneratedLeft: document.getElementById("useGeneratedLeft"),
   downloadGenerated: document.getElementById("downloadGenerated")
 };
+const LOCAL_BUILDER_BASE = "http://127.0.0.1:8765";
 
 const ctx = ui.stage.getContext("2d");
 ctx.imageSmoothingEnabled = false;
@@ -696,6 +699,74 @@ async function handleBuildSheet() {
   }
 }
 
+async function checkLocalBuilder() {
+  try {
+    const res = await fetch(`${LOCAL_BUILDER_BASE}/health`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    setBuildStatus(`Builder local activo (${data.status})`);
+  } catch (error) {
+    setBuildStatus(
+      "Builder local no disponible. Inicia /Users/jesussilva/Documents/gpt/sprite_simulator/sprites_builder/start_builder_bridge.command",
+      true
+    );
+  }
+}
+
+async function handleBuildLocal() {
+  try {
+    const folderPath = (ui.folderPath.value || "").trim();
+    if (!folderPath) {
+      throw new Error("Ingresa la ruta absoluta de la carpeta (ej: /Users/.../PJ_Gargoyle).");
+    }
+    setBuildStatus("Enviando tarea al Builder local...");
+    const res = await fetch(`${LOCAL_BUILDER_BASE}/build`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ folder_path: folderPath })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || `HTTP ${res.status}`);
+    }
+    if (!data.png_base64) {
+      throw new Error("Builder local no devolvió imagen.");
+    }
+
+    const url = `data:image/png;base64,${data.png_base64}`;
+    const img = await loadImage(url);
+    const generated = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      name: data.output_name || "generated.png",
+      sourceFolder: data.folder_name || "local_builder",
+      objectType: data.object_type || "unknown",
+      frameW: Number(data.frame_width) || state.frameWidth,
+      frameH: Number(data.frame_height) || state.frameHeight,
+      rowCount: Math.max(1, Math.floor(img.height / (Number(data.frame_height) || state.frameHeight))),
+      frameCount: Math.max(1, Math.floor(img.width / (Number(data.frame_width) || state.frameWidth))),
+      url,
+      blob: null,
+      img
+    };
+    addGeneratedAsset(generated);
+
+    if (generated.objectType === "weapon") {
+      if (generated.name.toLowerCase().includes("left")) {
+        await applyGeneratedAssetAsLayer("weaponLeft", generated);
+      } else {
+        await applyGeneratedAssetAsLayer("weaponRight", generated);
+      }
+    } else {
+      await applyGeneratedAssetAsLayer("base", generated);
+    }
+
+    const tail = data.stdout_tail ? ` | ${data.stdout_tail}` : "";
+    setBuildStatus(`OK local: ${generated.name}${tail}`);
+  } catch (error) {
+    setBuildStatus(`Error local: ${error.message}`, true);
+  }
+}
+
 function onActionChange() {
   const previous = state.action;
   const next = ACTIONS.has(ui.action.value) ? ui.action.value : "idle";
@@ -772,6 +843,8 @@ function bindEvents() {
   });
 
   ui.buildSheetBtn.addEventListener("click", handleBuildSheet);
+  ui.buildLocalBtn.addEventListener("click", handleBuildLocal);
+  ui.checkBuilderBtn.addEventListener("click", checkLocalBuilder);
 
   ui.useGeneratedBase.addEventListener("click", async () => {
     const asset = getSelectedGeneratedAsset();
